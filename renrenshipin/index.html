@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>人人视频网页版-在线追剧_热门影视资源推荐与观看指南</title>
+  <meta name="description" content="人人视频网页版在线追剧指南：2026年热门美剧、韩剧、日剧、泰剧实时更新，提供网页版观看入口、剧集推荐、分类筛选与追更提醒。无需下载，打开浏览器即可浏览海量影视内容，适合喜欢在线刷剧的用户收藏。">
+  <meta name="keywords" content="人人视频网页版,在线追剧,美剧网页版,热门影视推荐,网页看剧">
+  <style>
+    /* ===== 全局变量与重置 ===== */
+    :root {
+      --bg-body: #f5f7fc;
+      --bg-card: #ffffff;
+      --bg-soft: #eef1f9;
+      --text-primary: #1a1f2e;
+      --text-secondary: #3e4a5e;
+      --text-muted: #6b7a8f;
+      --brand-primary: #2a5c7e;
+      --brand-secondary: #e85d3a;
+      --brand-accent: #f5b042;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 4px 12px rgba(0, 20, 40, 0.04);
+      --shadow-hover: 0 12px 28px rgba(0, 20, 40, 0.08);
+      --radius-card: 20px;
+      --radius-sm: 12px;
+      --max-width: 1200px;
+      --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--font-base);
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    /* ===== 通用组件 ===== */
+    .section {
+      margin: 48px 0;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      position: relative;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 24px;
+      background: var(--brand-primary);
+      border-radius: 4px;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      padding: 20px;
+      border: 1px solid var(--border-light);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .tag {
+      display: inline-block;
+      background: var(--bg-soft);
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 30px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .tag-hot {
+      background: #ffeae4;
+      color: #c03a1e;
+    }
+    .btn-outline {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 40px;
+      border: 1.5px solid var(--brand-primary);
+      color: var(--brand-primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      background: transparent;
+    }
+    .btn-outline:hover {
+      background: var(--brand-primary);
+      color: #fff;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    /* ===== 导航 ===== */
+    .navbar {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: var(--brand-primary);
+    }
+    .logo-icon {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--brand-primary), #3f7f9e);
+      border-radius: 10px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .nav-links a:hover {
+      color: var(--brand-primary);
+    }
+    .nav-search {
+      display: flex;
+      align-items: center;
+      background: var(--bg-soft);
+      padding: 6px 16px;
+      border-radius: 40px;
+      gap: 6px;
+    }
+    .nav-search input {
+      border: none;
+      background: transparent;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      outline: none;
+      width: 180px;
+      color: var(--text-primary);
+    }
+    .nav-search input::placeholder {
+      color: #9aa9b9;
+    }
+    .nav-search button {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--brand-primary);
+    }
+    /* ===== Banner ===== */
+    .hero {
+      background: linear-gradient(145deg, #eef6fa 0%, #dce9f2 100%);
+      border-radius: 40px;
+      padding: 48px 48px 56px;
+      margin: 32px 0 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '▶';
+      position: absolute;
+      right: 20px;
+      bottom: -20px;
+      font-size: 180px;
+      color: rgba(42, 92, 126, 0.06);
+      font-weight: 900;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: #102a3b;
+      max-width: 750px;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: #2a4356;
+      max-width: 640px;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+    .hero-search {
+      display: flex;
+      background: #fff;
+      border-radius: 60px;
+      padding: 6px 6px 6px 24px;
+      max-width: 500px;
+      box-shadow: 0 8px 20px rgba(0, 30, 50, 0.08);
+      margin-bottom: 32px;
+    }
+    .hero-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: transparent;
+      padding: 12px 0;
+    }
+    .hero-search button {
+      background: var(--brand-primary);
+      border: none;
+      color: #fff;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .hero-search button:hover {
+      background: #1e4460;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .hero-tags .tag {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      font-size: 0.85rem;
+      padding: 8px 18px;
+      border: 1px solid var(--border-light);
+      color: var(--text-secondary);
+      cursor: default;
+    }
+    /* ===== 内容简介 ===== */
+    .intro-box {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      margin: 32px 0;
+    }
+    .intro-box p {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      line-height: 1.85;
+    }
+    .intro-box p:last-child {
+      margin-bottom: 0;
+    }
+    .intro-highlight {
+      font-weight: 600;
+      color: var(--brand-primary);
+    }
+    /* ===== 卡片网格 ===== */
+    .content-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+      height: 100%;
+    }
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .card-cover {
+      height: 120px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(145deg, #d4e3ed, #b2cadb);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.7);
+      font-weight: 700;
+      font-size: 1.8rem;
+      position: relative;
+    }
+    .card-cover span {
+      background: rgba(0,0,0,0.2);
+      padding: 6px 14px;
+      border-radius: 30px;
+      backdrop-filter: blur(4px);
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .card-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    /* ===== 更新列表 ===== */
+    .update-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .update-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 20px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      transition: background 0.15s;
+    }
+    .update-item:hover {
+      background: #f9fcff;
+    }
+    .update-time {
+      min-width: 72px;
+      font-size: 0.8rem;
+      color: var(--brand-primary);
+      font-weight: 600;
+      background: var(--bg-soft);
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-align: center;
+    }
+    .update-content {
+      flex: 1;
+    }
+    .update-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .update-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    /* ===== 分类入口 ===== */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .category-item {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 18px 16px;
+      text-align: center;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+    .category-item:hover {
+      background: var(--brand-primary);
+      color: #fff;
+      border-color: var(--brand-primary);
+    }
+    /* ===== 深度解析正文 ===== */
+    .deep-dive {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      padding: 40px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .deep-dive h3 {
+      font-size: 1.4rem;
+      margin: 28px 0 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .deep-dive h3:first-of-type {
+      margin-top: 0;
+    }
+    .deep-dive p {
+      font-size: 1.02rem;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      line-height: 1.85;
+    }
+    /* ===== FAQ ===== */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-q {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      color: var(--brand-primary);
+      display: flex;
+      gap: 8px;
+    }
+    .faq-q::before {
+      content: 'Q';
+      font-weight: 800;
+      color: var(--brand-secondary);
+    }
+    .faq-a {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    /* ===== 评论 ===== */
+    .comment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .comment-item {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 18px 20px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .comment-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #b3cfdf, #8fb4c9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .comment-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .comment-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .comment-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    /* ===== 资讯 ===== */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .news-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .news-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    .news-date {
+      font-size: 0.8rem;
+      color: var(--brand-primary);
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .news-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .news-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    /* ===== 页脚 ===== */
+    .footer {
+      background: #1a2632;
+      color: #b0c4d4;
+      padding: 48px 0 24px;
+      margin-top: 64px;
+      border-radius: 40px 40px 0 0;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .footer-brand h4 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .footer-brand p {
+      max-width: 320px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #8fa8bb;
+    }
+    .footer-links {
+      display: flex;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+    .footer-col h5 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 0.9rem;
+      color: #8fa8bb;
+      margin-bottom: 10px;
+    }
+    .footer-col a:hover {
+      color: #fff;
+    }
+    .footer-bottom {
+      border-top: 1px solid #2e3e4e;
+      margin-top: 40px;
+      padding-top: 24px;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #6a7e91;
+    }
+    /* ===== 响应式 ===== */
+    @media (max-width: 1024px) {
+      .grid-4 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .grid-4, .grid-3, .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      .comment-grid {
+        grid-template-columns: 1fr;
+      }
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding: 32px 24px;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-inner {
+        justify-content: space-between;
+      }
+      .container {
+        padding: 0 16px;
+      }
+      .deep-dive {
+        padding: 24px;
+      }
+      .intro-box {
+        padding: 24px;
+      }
+      .footer-inner {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .footer-links {
+        gap: 32px;
+      }
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232a5c7e'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='white' font-family='Arial'%3E▶%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <!-- 导航 -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="/#hero" class="logo">
+        <span class="logo-icon"></span>
+        人人视频网页版
+      </a>
+      <nav class="nav-links">
+        <a href="/#hero">首页</a>
+        <a href="/#hot">热播推荐</a>
+        <a href="/#latest">最新更新</a>
+        <a href="/#category">分类</a>
+        <a href="/#deep">深度解析</a>
+        <a href="/#faq">常见问题</a>
+        <a href="/#comments">评论</a>
+        <a href="/#news">资讯</a>
+      </nav>
+      <div class="nav-search">
+        <input type="text" placeholder="搜索剧集、演员、类型">
+        <button aria-label="搜索">🔍</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Banner -->
+    <section id="hero" class="hero">
+      <h1>人人视频网页版 · 在线追剧不迷路</h1>
+      <p>无需下载客户端，打开浏览器就能刷遍美剧、韩剧、日剧、泰剧。2026 年热门剧集实时更新，分类筛选、追更提醒、剧单推荐一站式体验。</p>
+      <div class="hero-search">
+        <input type="text" placeholder="输入剧名或关键词，如「怪奇物语」">
+        <button>搜索剧集</button>
+      </div>
+      <div class="hero-tags">
+        <span class="tag">美剧专区</span>
+        <span class="tag">韩剧热播</span>
+        <span class="tag">日剧更新</span>
+        <span class="tag">泰剧推荐</span>
+        <span class="tag">网页版入口</span>
+        <span class="tag">追更日历</span>
+        <span class="tag">高分剧单</span>
+      </div>
+    </section>
+
+    <!-- 内容简介 -->
+    <section id="intro" class="intro-box">
+      <p><span class="intro-highlight">人人视频网页版</span>是面向影视爱好者的在线内容导航页面，聚合了当前热门的海外剧集与影视资讯。无论你想找一部下饭喜剧、悬疑烧脑剧，还是想紧跟每周更新的热门美剧，这里都能帮你快速定位。</p>
+      <p>页面提供分类筛选、实时更新列表、剧集卡片推荐以及常见问题解答。适合习惯在电脑浏览器或手机浏览器直接看剧的用户，也适合想提前了解剧集口碑、演员阵容和更新节奏的观众。所有内容以信息聚合为主，方便你收藏并持续回访。</p>
+      <p>如果你经常搜索“<strong>人人视频网页版在线看</strong>”“<strong>美剧网页版更新</strong>”这类关键词，本页面可以作为一个轻量级的入口指南，帮助你在海量内容中快速找到想看的剧集类型。记得把页面加入书签，随时查看最新动态。</p>
+    </section>
+
+    <!-- 热门推荐 -->
+    <section id="hot" class="section">
+      <div class="section-header">
+        <h2 class="section-title">热门剧集推荐</h2>
+        <span class="section-sub">2026 年 11 月第 1 周 · 编辑精选</span>
+      </div>
+      <div class="grid-4">
+        <div class="content-card">
+          <div class="card-cover"><span>热播</span></div>
+          <h3 class="card-title">怪奇物语 · 最终季</h3>
+          <div class="card-meta">
+            <span class="tag tag-hot">科幻悬疑</span>
+            <span class="tag">Netflix</span>
+            <span class="tag">更新至第 5 集</span>
+          </div>
+          <p class="card-desc">霍金斯小镇迎来终极对决，11 号的能力再次升级。本季节奏紧凑，怀旧元素与恐怖氛围拉满。</p>
+          <div class="card-footer"><span>🔥 9.6 万人正在看</span><span>评分 9.2</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>新剧</span></div>
+          <h3 class="card-title">黑暗荣耀 · 第三季</h3>
+          <div class="card-meta">
+            <span class="tag tag-hot">复仇爽剧</span>
+            <span class="tag">韩剧</span>
+            <span class="tag">全 8 集上线</span>
+          </div>
+          <p class="card-desc">文东恩的复仇计划进入收尾阶段，新角色加入让局势更加复杂。台词犀利，反转不断。</p>
+          <div class="card-footer"><span>🔥 6.2 万人正在看</span><span>评分 9.0</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>口碑</span></div>
+          <h3 class="card-title">重启人生 · 特别篇</h3>
+          <div class="card-meta">
+            <span class="tag">治愈奇幻</span>
+            <span class="tag">日剧</span>
+            <span class="tag">本周六更新</span>
+          </div>
+          <p class="card-desc">麻美和真理的友情线再度展开，这次她们尝试了全新职业。温暖又幽默，适合周末一口气刷完。</p>
+          <div class="card-footer"><span>🔥 3.8 万人正在看</span><span>评分 9.4</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>黑马</span></div>
+          <h3 class="card-title">禁忌女孩 · 新章</h3>
+          <div class="card-meta">
+            <span class="tag tag-hot">泰剧惊悚</span>
+            <span class="tag">校园</span>
+            <span class="tag">更新至第 3 集</span>
+          </div>
+          <p class="card-desc">娜诺回归，这次她将目光投向大学校园。每一集独立故事，挖掘人性阴暗面，胆小的观众建议白天观看。</p>
+          <div class="card-footer"><span>🔥 5.1 万人正在看</span><span>评分 8.7</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>悬疑</span></div>
+          <h3 class="card-title">无罪之最 · 第二季</h3>
+          <div class="card-meta">
+            <span class="tag">西班牙剧</span>
+            <span class="tag">反转</span>
+            <span class="tag">已完结</span>
+          </div>
+          <p class="card-desc">马特奥的过去再次找上门，多条时间线交错叙事，最后一集揭露真相时让人拍案叫绝。</p>
+          <div class="card-footer"><span>🔥 2.9 万人正在看</span><span>评分 8.9</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>喜剧</span></div>
+          <h3 class="card-title">足球教练 · 第四季</h3>
+          <div class="card-meta">
+            <span class="tag">英式幽默</span>
+            <span class="tag">Apple TV+</span>
+            <span class="tag">每周三更新</span>
+          </div>
+          <p class="card-desc">里士满球队重返英超，内森和罗伊的搭档带来新的笑料。轻松下饭，适合配饭观看。</p>
+          <div class="card-footer"><span>🔥 1.7 万人正在看</span><span>评分 9.1</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>古装</span></div>
+          <h3 class="card-title">王冠 · 最终季</h3>
+          <div class="card-meta">
+            <span class="tag">历史传记</span>
+            <span class="tag">英剧</span>
+            <span class="tag">全 10 集</span>
+          </div>
+          <p class="card-desc">聚焦王室 90 年代的风云变幻，服化道依旧精致。对历史感兴趣的观众可以配合纪录片一起看。</p>
+          <div class="card-footer"><span>🔥 2.2 万人正在看</span><span>评分 8.8</span></div>
+        </div>
+        <div class="content-card">
+          <div class="card-cover"><span>动画</span></div>
+          <h3 class="card-title">瑞克和莫蒂 · 第八季</h3>
+          <div class="card-meta">
+            <span class="tag">科幻动画</span>
+            <span class="tag">Adult Swim</span>
+            <span class="tag">更新至第 6 集</span>
+          </div>
+          <p class="card-desc">脑洞继续飞驰，本季回归了更多家庭线。适合喜欢无厘头科幻和黑色幽默的观众。</p>
+          <div class="card-footer"><span>🔥 4.4 万人正在看</span><span>评分 9.0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 最新更新 -->
+    <section id="latest" class="section">
+      <div class="section-header">
+        <h2 class="section-title">最新更新动态</h2>
+        <span class="section-sub">2026 年 11 月 7 日 · 实时追踪</span>
+      </div>
+      <div class="update-list">
+        <div class="update-item">
+          <span class="update-time">11-07</span>
+          <div class="update-content">
+            <div class="update-title">怪奇物语 S5E5 上线</div>
+            <div class="update-desc">关键角色回归，霍金斯实验室秘密即将揭晓。网页版已同步更新。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-07</span>
+          <div class="update-content">
+            <div class="update-title">黑暗荣耀 S3 全集放出</div>
+            <div class="update-desc">Netflix 一次性放出全部 8 集，复仇结局引发热议。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-06</span>
+          <div class="update-content">
+            <div class="update-title">重启人生 特别篇预告</div>
+            <div class="update-desc">官方发布 1 分钟预告，熟悉的面孔悉数回归，11 月 9 日正式上线。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-06</span>
+          <div class="update-content">
+            <div class="update-title">禁忌女孩 新章第 3 集</div>
+            <div class="update-desc">本集聚焦网络暴力话题，娜诺的惩罚方式再度升级。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-05</span>
+          <div class="update-content">
+            <div class="update-title">足球教练 S4E6 更新</div>
+            <div class="update-desc">球队迎来关键比赛，战术安排引发更衣室矛盾，笑点密集。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-05</span>
+          <div class="update-content">
+            <div class="update-title">瑞克和莫蒂 S8E6 上线</div>
+            <div class="update-desc">本集致敬经典科幻电影，彩蛋数量创新高，粉丝狂欢。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-04</span>
+          <div class="update-content">
+            <div class="update-title">王冠 最终季幕后特辑</div>
+            <div class="update-desc">制作团队分享服装设计理念，揭秘王室场景还原过程。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11-04</span>
+          <div class="update-content">
+            <div class="update-title">无罪之最 第二季上线</div>
+            <div class="update-desc">西班牙悬疑剧全集登陆，网页版已收录，适合喜欢烧脑剧的观众。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分类入口 -->
+    <section id="category" class="section">
+      <div class="section-header">
+        <h2 class="section-title">分类快速入口</h2>
+        <span class="section-sub">按类型找剧更高效</span>
+      </div>
+      <div class="category-grid">
+        <div class="category-item">美剧专区</div>
+        <div class="category-item">韩剧热播</div>
+        <div class="category-item">日剧精选</div>
+        <div class="category-item">泰剧推荐</div>
+        <div class="category-item">悬疑烧脑</div>
+        <div class="category-item">喜剧下饭</div>
+        <div class="category-item">科幻奇幻</div>
+        <div class="category-item">高分纪录片</div>
+      </div>
+    </section>
+
+    <!-- 深度解析 -->
+    <section id="deep" class="section">
+      <div class="section-header">
+        <h2 class="section-title">深度解析 · 网页版追剧体验</h2>
+      </div>
+      <div class="deep-dive">
+        <p>在浏览器里追剧已经成为很多人的日常习惯，而<strong>人人视频网页版</strong>这类聚合页面正好满足了“打开即看、无需安装”的需求。对于经常在电脑前工作或学习的人来说，网页版比客户端更轻便，标签页一开就能随时切换。同时，手机浏览器也能适配，躺在床上刷一集美剧同样方便。</p>
+        <h3>类型覆盖与内容节奏</h3>
+        <p>从美剧、韩剧到日剧、泰剧，不同地区的剧集在叙事节奏上有明显差异。美剧通常采用周更模式，单集信息量大，适合喜欢边看边讨论的观众；韩剧和日剧往往一周两集或一次性放出，适合周末集中刷完。泰剧在近几年制作水准提升很快，惊悚、校园题材尤其突出。<strong>人人视频网页版</strong>将不同地区的剧集按分类整理，方便你根据自己的时间安排选择适合的追剧节奏。</p>
+        <h3>受众与选择建议</h3>
+        <p>如果你喜欢强情节和烧脑反转，可以优先关注悬疑类剧集，比如西班牙剧和部分美剧；如果希望放松心情，喜剧和治愈系日剧更合适；对于喜欢视觉冲击和名场面的观众，科幻奇幻题材值得一试。网页版页面通常会标注剧集的更新状态和评分，帮助你快速判断是否符合口味。</p>
+        <h3>视听表现与消费体验</h3>
+        <p>网页版播放体验与网络环境关系较大，建议在稳定的 Wi-Fi 环境下观看。部分剧集支持清晰度切换，对于画质有要求的观众可以手动选择。页面本身不存储资源，而是提供导航和分类信息，因此加载速度较快，浏览剧单时很少出现卡顿。如果你习惯边看边查演员资料，网页版的标签页切换优势就体现出来了。</p>
+        <h3>与同类页面的比较</h3>
+        <p>和传统的影视导航站相比，<strong>人人视频网页版</strong>页面更注重信息密度和可读性，没有弹窗干扰，卡片式设计让剧集信息一目了然。对于搜索“人人视频网页版在线看”的用户来说，这类页面提供的是入口和参考价值，而不是直接播放。合理利用分类和推荐，可以扩展自己的剧单，发现更多冷门佳作。</p>
+        <p>总的来说，这是一个适合收藏的追剧辅助页面。无论是想找下一部下饭剧，还是想了解当前热门剧集的更新情况，都可以在这里快速获得有效信息。</p>
+      </div>
+    </section>
+
+    <!-- 体验指南 -->
+    <section id="guide" class="section">
+      <div class="section-header">
+        <h2 class="section-title">网页版体验指南</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3 style="font-size:1.1rem;margin-bottom:12px;">📱 移动端适配</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">手机浏览器访问自动适配，卡片和文字大小合适，无需缩放即可阅读剧集信息。</p>
+        </div>
+        <div class="card">
+          <h3 style="font-size:1.1rem;margin-bottom:12px;">🔖 收藏与追更</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">将页面加入书签，每日打开查看最新更新列表，不错过热门剧集的新一集。</p>
+        </div>
+        <div class="card">
+          <h3 style="font-size:1.1rem;margin-bottom:12px;">🔍 搜索与筛选</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">顶部搜索框支持剧名关键词，分类入口可快速跳转至感兴趣的类型。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="section-header">
+        <h2 class="section-title">常见问题 · FAQ</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <div class="faq-q">人人视频网页版需要注册账号吗？</div>
+          <div class="faq-a">页面本身作为内容导航站，浏览剧集列表、分类和更新动态无需注册。如果你要跳转到具体播放页面，部分平台可能要求登录，请根据实际跳转页面提示操作。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">网页版能看哪些地区的剧集？</div>
+          <div class="faq-a">页面覆盖美剧、韩剧、日剧、泰剧以及部分欧洲剧集，分类中也有悬疑、喜剧、科幻等类型标签。具体资源以实际跳转的平台为准，页面提供的是信息聚合和分类索引。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">追剧更新频率是怎样的？</div>
+          <div class="faq-a">不同剧集更新节奏不同。美剧通常每周更新一集，韩剧和日剧多为每周两集或一次性放出全集。页面“最新更新”板块会按时间列出近期上线的剧集，方便你判断追更节奏。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">如何找到适合自己口味的剧？</div>
+          <div class="faq-a">可以先从分类入口选择喜欢的类型，比如“悬疑烧脑”或“喜剧下饭”，再看卡片上的标签和简介。热门推荐板块的编辑精选也值得参考，通常标注了评分和热度。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">网页版和客户端有什么区别？</div>
+          <div class="faq-a">网页版无需下载安装，打开浏览器即可访问，适合临时追剧或办公间隙浏览。客户端通常功能更完整，比如离线缓存。本页面作为网页版入口，主要提供剧集导航和推荐信息。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">页面上的评分和热度是真实的吗？</div>
+          <div class="faq-a">评分和热度为编辑根据公开讨论度和平台展示数据综合模拟，用于提供参考维度，不代表官方精确统计。建议结合多个来源判断剧集口碑，比如社交媒体讨论和评分网站。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 评论 -->
+    <section id="comments" class="section">
+      <div class="section-header">
+        <h2 class="section-title">用户评论 · 大家都在聊</h2>
+        <span class="section-sub">近 30 天热门讨论</span>
+      </div>
+      <div class="comment-grid">
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">追</div>
+            <span class="comment-name">追剧小丸子</span>
+            <span class="comment-date">11-06</span>
+          </div>
+          <p class="comment-text">网页版找剧确实方便，不用下载一堆 App。最近在追怪奇物语最终季，每周等更新太煎熬了。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">悬</div>
+            <span class="comment-name">悬疑爱好者</span>
+            <span class="comment-date">11-05</span>
+          </div>
+          <p class="comment-text">无罪之最第二季真的值得看，反转很多，建议不要提前看剧透。网页版分类里悬疑标签找起来很快。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">韩</div>
+            <span class="comment-name">韩剧控Lily</span>
+            <span class="comment-date">11-05</span>
+          </div>
+          <p class="comment-text">黑暗荣耀第三季一次性放出太爽了，熬夜看完。宋慧乔的演技依然在线，结局有点意难平。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">下</div>
+            <span class="comment-name">下饭剧选手</span>
+            <span class="comment-date">11-04</span>
+          </div>
+          <p class="comment-text">足球教练第四季还是那么治愈，每周三吃饭的时候看一集，心情都变好了。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">动</div>
+            <span class="comment-name">动画宅</span>
+            <span class="comment-date">11-04</span>
+          </div>
+          <p class="comment-text">瑞克和莫蒂第八季脑洞不减，第六集彩蛋很多，建议二刷。网页版有动画分类就好了。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">路</div>
+            <span class="comment-name">路人甲</span>
+            <span class="comment-date">11-03</span>
+          </div>
+          <p class="comment-text">页面加载挺快的，没有乱七八糟的弹窗，这点好评。希望更新列表能加上剧集类型标签。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">泰</div>
+            <span class="comment-name">泰剧新粉</span>
+            <span class="comment-date">11-03</span>
+          </div>
+          <p class="comment-text">禁忌女孩新章第三集讲网络暴力，剧情有点沉重但很现实。娜诺还是那么飒。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">英</div>
+            <span class="comment-name">英剧迷</span>
+            <span class="comment-date">11-02</span>
+          </div>
+          <p class="comment-text">王冠最终季服化道真的绝了，每一帧都像油画。对英国历史感兴趣的话可以看看。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">吐</div>
+            <span class="comment-name">吐槽君</span>
+            <span class="comment-date">11-02</span>
+          </div>
+          <p class="comment-text">有些剧的简介写得太夸张了，实际看了感觉一般。不过分类找剧还是方便的。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">周</div>
+            <span class="comment-name">周末看剧</span>
+            <span class="comment-date">11-01</span>
+          </div>
+          <p class="comment-text">重启人生特别篇终于要来了，等了好久。这个页面更新动态挺及时的，收藏了。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">科</div>
+            <span class="comment-name">科幻迷</span>
+            <span class="comment-date">10-31</span>
+          </div>
+          <p class="comment-text">希望网页版能多推荐一些冷门科幻剧，热门的那几部都看过了。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">移</div>
+            <span class="comment-name">移动端用户</span>
+            <span class="comment-date">10-30</span>
+          </div>
+          <p class="comment-text">手机浏览器打开排版不错，字不挤，卡片滑动也顺。就是搜索框有点小。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">评</div>
+            <span class="comment-name">评分参考</span>
+            <span class="comment-date">10-29</span>
+          </div>
+          <p class="comment-text">卡片上的评分可以参考一下，基本和豆瓣差不多。热度值就随便看看。</p>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="avatar">新</div>
+            <span class="comment-name">新剧尝鲜</span>
+            <span class="comment-date">10-28</span>
+          </div>
+          <p class="comment-text">最近上了好多新剧，页面更新挺快的。正在纠结看哪部，分类拯救选择困难。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 相关资讯 -->
+    <section id="news" class="section">
+      <div class="section-header">
+        <h2 class="section-title">相关资讯</h2>
+        <span class="section-sub">影视动态速览</span>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-date">2026-11-06</div>
+          <h3 class="news-title">怪奇物语最终季收视创新高</h3>
+          <p class="news-desc">第五季上线首周观看时长突破 12 亿分钟，成为平台年度热门剧集之一。</p>
+        </div>
+        <div class="news-card">
+          <div class="news-date">2026-11-05</div>
+          <h3 class="news-title">黑暗荣耀第三季结局引热议</h3>
+          <p class="news-desc">复仇故事迎来终章，观众对结局评价两极分化，相关话题登上热搜。</p>
+        </div>
+        <div class="news-card">
+          <div class="news-date">2026-11-04</div>
+          <h3 class="news-title">重启人生特别篇发布正式预告</h3>
+          <p class="news-desc">原班人马回归，特别篇将讲述主角们新的生活篇章，11 月 9 日上线。</p>
+        </div>
+        <div class="news-card">
+          <div class="news-date">2026-11-03</div>
+          <h3 class="news-title">足球教练第四季口碑持续走高</h3>
+          <p class="news-desc">新一季保持温暖幽默风格，烂番茄新鲜度 96%，被赞“最治愈的体育喜剧”。</p>
+        </div>
+        <div class="news-card">
+          <div class="news-date">2026-11-02</div>
+          <h3 class="news-title">瑞克和莫蒂第八季彩蛋解析</h3>
+          <p class="news-desc">粉丝整理本季致敬的科幻作品，平均每集有 5 个以上隐藏彩蛋。</p>
+        </div>
+        <div class="news-card">
+          <div class="news-date">2026-11-01</div>
+          <h3 class="news-title">泰剧禁忌女孩新章话题度飙升</h3>
+          <p class="news-desc">新一季聚焦校园和社会议题，在东南亚地区引发广泛讨论。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <h4>人人视频网页版</h4>
+        <p>在线追剧导航与影视资讯聚合页面，提供热门剧集推荐、分类筛选和更新动态。所有内容以信息展示为主，不存储任何视频资源。</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>内容导航</h5>
+          <a href="/#hot">热门推荐</a>
+          <a href="/#latest">最新更新</a>
+          <a href="/#category">分类入口</a>
+          <a href="/#deep">深度解析</a>
+        </div>
+        <div class="footer-col">
+          <h5>帮助</h5>
+          <a href="/#faq">常见问题</a>
+          <a href="/#comments">用户评论</a>
+          <a href="/#news">相关资讯</a>
+          <a href="/#guide">体验指南</a>
+        </div>
+        <div class="footer-col">
+          <h5>友情链接</h5>
+          <a href="javascript:void(0)">影视资源站</a>
+          <a href="javascript:void(0)">剧集评分库</a>
+          <a href="javascript:void(0)">追剧日历</a>
+          <a href="javascript:void(0)">合作联系</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 人人视频网页版 · 内容导航页面 | 本站不提供视频存储与上传，仅做信息聚合与推荐 | 页面数据仅供参考</p>
+    </div>
+  </footer>
+</body>
+        </html>
